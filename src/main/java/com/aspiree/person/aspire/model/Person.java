@@ -1,9 +1,22 @@
 package com.aspiree.person.aspire.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Person {
+
+
+
+    @Id
     private Integer id;
     private String firstName;
     private  String lastName;
+
+    public Person() {
+    }
 
     @Override
     public String toString() {

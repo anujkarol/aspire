@@ -1,7 +1,7 @@
 package com.aspiree.person.aspire.controller;
 
 
-import com.aspiree.person.aspire.model.Person;
+import com.aspiree.person.aspire.dto.PersonDto;
 import com.aspiree.person.aspire.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +18,26 @@ public class PersonController {
     private  PersonService personService;
 
     @GetMapping
-    public List<Person> getAll() {
+    public List<apa> getAll() {
         System.out.println("GET ALL");
         return personService.getAllPersonsList();
     }
 
     @GetMapping("/{id}")
-    public Person getOneById(@PathVariable int id) {
+    public PersonDto getOneById(@PathVariable int id) {
 
         System.out.println("GET BY ID ===" + id);
         return personService.getPersonById(id);
     }
 
     @PostMapping
-    public  Person create(@RequestBody Person person) {
+    public  PersonDto create(@RequestBody PersonDto person) {
         System.out.println("CREATE " + person);
         return personService.createPerson(person);
     }
 
     @PutMapping
-    public  Person update(@RequestBody Person person) {
+    public  PersonDto update(@RequestBody PersonDto person) {
         System.out.println("UPDATE " + person);
         return  personService.updatePerson(person);
     }
