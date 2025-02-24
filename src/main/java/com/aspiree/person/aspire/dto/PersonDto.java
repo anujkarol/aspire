@@ -3,7 +3,7 @@ package com.aspiree.person.aspire.dto;
 public class PersonDto {
     private Integer id;
     private String firstName;
-    private  String lastName;
+    private String lastName;
     private String fullName;
 
     public String getFullName() {
