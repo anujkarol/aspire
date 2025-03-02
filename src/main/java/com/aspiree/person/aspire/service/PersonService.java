@@ -1,8 +1,12 @@
 package com.aspiree.person.aspire.service;
 
+import com.aspiree.person.aspire.dto.AddressDto;
 import com.aspiree.person.aspire.dto.PersonDto;
 
+import com.aspiree.person.aspire.dto.ProjectDto;
+import com.aspiree.person.aspire.model.Address;
 import com.aspiree.person.aspire.model.Person;
+import com.aspiree.person.aspire.model.Project;
 import com.aspiree.person.aspire.repository.PersonIRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.transform.Result;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +23,12 @@ public class PersonService {
 
     @Autowired
     private PersonIRepository personIRepository;
+
+    @Autowired
+    private  ProjectService projectService;
+
+    @Autowired
+    private AddressService addressService;
 
 //    private List<Person> persons = new ArrayList<>(Arrays.asList(new Person(101, "Joh", "Doe"), new Person(102, "Anuj", "Sood"),
 //            new Person(103, "Neetu", "Sood"),new Person(104, "Ritu", "Karol"),
@@ -44,9 +55,18 @@ public class PersonService {
     private PersonDto toDto(Person person) {
         PersonDto result = new PersonDto();
         result.setId((person.getId()));
-            result.setFirstName(person.getFirstName());
-            result.setLastName(person.getLastName());
-            result.setFullName(person.getFirstName() + " " + person.getLastName());
+        result.setFirstName(person.getFirstName());
+        result.setLastName(person.getLastName());
+        result.setFullName(person.getFirstName() + " " + person.getLastName());
+
+        final Project project = person.getProject();
+        final ProjectDto projectDto = projectService.toDto(project);
+        result.setProjectDto(projectDto);
+
+        final Set<Address> addresses = person.getAddresses();
+        final Set<AddressDto> addressDtos = addressService.toDto(addresses);
+        result.setAddressDtoSet(addressDtos);
+
         System.out.println("toDto person" + " " + result);
             return result;
     }
@@ -56,6 +76,24 @@ public class PersonService {
         result.setId((personDto.getId()));
         result.setFirstName(personDto.getFirstName());
         result.setLastName(personDto.getLastName());
+
+        final ProjectDto projectDto = personDto.getProjectDto();
+        final Project project =  projectService.toEntity(projectDto);
+
+        result.setProject(project);
+
+        // bidirectional relation
+        final Set<AddressDto> addressDto = personDto.getAddressDtoSet();
+        final Set<Address> addresses =  addressService.toEntity(addressDto);
+        result.setAddresses(addresses);
+
+
+        addresses.forEach(address -> {
+            address.setPerson(result);
+        });
+
+
+
         return result;
     }
 
@@ -103,4 +141,6 @@ public class PersonService {
 //                .findFirst()
 //                .orElse(null);
     }
+
+
 }

@@ -1,10 +1,15 @@
 package com.aspiree.person.aspire.dto;
 
+import java.util.Set;
+
 public class PersonDto {
     private Integer id;
     private String firstName;
     private String lastName;
     private String fullName;
+
+    private ProjectDto projectDto;
+    private Set<AddressDto> addressDtoSet; // because a person can be tagged to multiple asdress
 
     public String getFullName() {
         return fullName;
@@ -25,6 +30,22 @@ public class PersonDto {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public ProjectDto getProjectDto() {
+        return projectDto;
+    }
+
+    public void setProjectDto(ProjectDto projectDto) {
+        this.projectDto = projectDto;
+    }
+
+    public Set<AddressDto> getAddressDtoSet() {
+        return addressDtoSet;
+    }
+
+    public void setAddressDtoSet(Set<AddressDto> addressDtoSet) {
+        this.addressDtoSet = addressDtoSet;
     }
 
     public void setFirstName(String firstName) {

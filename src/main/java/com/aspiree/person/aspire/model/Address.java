@@ -12,10 +12,10 @@ public class Address {
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "city", length = 20, nullable = false)
+    @Column(name = "city", length = 20, nullable = true)
     private String city;
 
-    @Column(name = "state", length = 20, nullable = false)
+    @Column(name = "state", length = 20, nullable = true)
     private  String state;
 
     @ManyToOne
