@@ -7,7 +7,8 @@ import com.aspiree.person.aspire.dto.ProjectDto;
 import com.aspiree.person.aspire.model.Address;
 import com.aspiree.person.aspire.model.Person;
 import com.aspiree.person.aspire.model.Project;
-import com.aspiree.person.aspire.repository.PersonIRepository;
+import com.aspiree.person.aspire.repository.PersonRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class PersonService {
 
     @Autowired
-    private PersonIRepository personIRepository;
+    private PersonRepository personIRepository;
 
     @Autowired
     private  ProjectService projectService;
@@ -36,6 +37,8 @@ public class PersonService {
 
 
     public List<PersonDto> getAllPersonsList(){
+        final List<Person> person = personIRepository.findByFirstName("Anuj");
+        System.out.println("JPA QUERY"  + " " + person);
         final List<Person> persons = personIRepository.findAll();
         System.out.println("persons" + persons);
         final List<PersonDto> result = toDto(persons);
@@ -99,7 +102,12 @@ public class PersonService {
 
     public PersonDto getPersonById(int id) {
         final Optional<Person> optionalPerson = personIRepository.findById(id);
-        final PersonDto result = optionalPerson.map(person -> toDto(person)).orElse((null));
+//        final PersonDto result = optionalPerson.map(person -> toDto(person)).orElse((null));
+        if(optionalPerson.isEmpty()) {
+            throw new EntityNotFoundException("Person with id " + id + "not found.");
+        }
+
+        final PersonDto result = toDto(optionalPerson.get());
         return result;
 //        return optionalPerson.orElse(null);
         //        return persons.stream()
